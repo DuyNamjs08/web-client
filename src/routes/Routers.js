@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Products from '../pages/Products';
-import Cart from '../pages/Cart';
+import CartPage from '../pages/CartPage';
 import CheckOut from '../pages/CheckOut';
 import Contact from '../pages/Contact';
 import ProductDetails from '../pages/ProductDetails';
@@ -24,8 +24,8 @@ function Routers() {
             <Route path='/' element={<Navigate to='/home' />} />
             <Route path='home' element={<Home />} />
             <Route path='product' element={<Products />} />
-            <Route path='product/:id' element={<ProductDetails />} />
-            <Route path='cart' element={<Cart />} />
+            <Route path='product/:idProduct' element={<ProductDetails />} />
+            <Route path='cartpage' element={<CartPage />} />
             <Route path='checkout' element={<RequireAuth><CheckOut /></RequireAuth>} />
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />

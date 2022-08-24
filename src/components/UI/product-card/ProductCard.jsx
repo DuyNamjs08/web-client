@@ -1,15 +1,14 @@
 import React from "react";
 import "../../../style/product-card.scss";
 import { Link } from "react-router-dom";
-import {addItem} from '../../../redux/action'
-import {useDispatch} from 'react-redux'
+import { addItem } from "../../../redux/action";
+import { useDispatch } from "react-redux";
 
 function ProductCard(props) {
   const { id, title, img, price } = props.item;
-  const dispatch = useDispatch()
-  const addToCart=()=>{
-    dispatch(addItem({ id, title, img, price }))
-  }
+  const dispatch = useDispatch();
+  // const quantity=1
+
   return (
     <div className="product__item">
       <div className="product__img">
@@ -22,7 +21,12 @@ function ProductCard(props) {
         </h5>
         <div className=" d-flex align-items-center justify-content-between ">
           <span className="product__price">${price}</span>
-          <button className="addTOCart__btn" onClick={addToCart}>Add to Cart</button>
+          <button
+            className="addTOCart__btn"
+            onClick={() => dispatch(addItem({ id, title, img, price }))}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

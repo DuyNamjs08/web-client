@@ -54,7 +54,7 @@ function Login() {
       isRegister: isRegister,
     };
     dispatch(authStart(dataLogin));
-    // navigate("/home");
+    navigate("/home");
   };
 
   useEffect(() => {

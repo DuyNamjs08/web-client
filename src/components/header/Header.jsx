@@ -3,18 +3,23 @@ import logo from "../../assets/images/img/tinder.png";
 import { Container } from "reactstrap";
 import { NavLink, Link } from "react-router-dom";
 import "../../style/header.scss";
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
+import {toggleCart} from '../../redux/action'
 const nav__link = [
   { display: "Home", path: "home" },
   { display: "Products", path: "product" },
-  { display: "Cart", path: "cart" },
+  { display: "Cart", path: "cartpage" },
   { display: "Contact", path: "contact" },
 ];
 
 function Header() {
-  const totalQuantity = useSelector((state) => state.CartReducer.totalQuantity);
-  const cartItems = useSelector((state) => state.CartReducer.cartItems);
-  console.log('cartItems:',cartItems);
+  const dispatch =useDispatch()
+  const totalQuantity = useSelector((state) => state.ReducerCheckout.totalQuantity);
+  const totalAmount = useSelector((state) => state.ReducerCheckout.totalAmount);
+  const cartAr = useSelector((state) => state.ReducerCheckout.cartAr);
+  console.log('totalQuantity:',totalQuantity);
+  console.log('totalAmount:',totalAmount);
+  console.log('cartAr:',cartAr);
   const menuRef = useRef(null);
   const headerRef = useRef(null);
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
@@ -62,7 +67,7 @@ function Header() {
           </div>
           {/* ====right menu ===== */}
           <div className="nav__right d-flex align-items-center gap-4">
-            <span className="cart__icon">
+            <span className="cart__icon" onClick={()=>dispatch(toggleCart())}>
               <i className="ri-shopping-bag-line"></i>
               <span className="cart__badge">{totalQuantity}</span>
             </span>

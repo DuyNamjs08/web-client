@@ -68,13 +68,13 @@ function Home(props) {
         snapShot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        console.log(list);
+        // console.log(list);
         setAllProducts(list);
-        const filteredPizza = list.filter(
+        const filterCategory = list.filter(
           (item) => item.category === "Men Clothes"
         );
-        const slicePizza = filteredPizza.slice(0, 4);
-        setHotProduct(slicePizza);
+        const eachCatagory = filterCategory.slice(0, 4);
+        setHotProduct(eachCatagory);
         setLoading(false);
       },
       (error) => {
@@ -85,7 +85,7 @@ function Home(props) {
       unsub();
     };
   }, []);
-  console.log("allProducts:", allProducts);
+  // console.log("allProducts:", allProducts);
 
   const Loading = () => {
     return <div>loading .....</div>;
@@ -102,42 +102,10 @@ function Home(props) {
     );
   };
 
-  // useEffect(() => {
-  //   const filteredPizza = products.filter((item) => item.category === "Pizza");
-  //   const slicePizza = filteredPizza.slice(0, 4);
-  //   setHotPizza(slicePizza);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (category === "ALL") {
-  //     setAllProducts(products);
-  //   }
-  //   if (category === "BURGER") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Burger"
-  //     );
-
-  //     setAllProducts(filteredProducts);
-  //   }
-  //   if (category === "PIZZA") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Pizza"
-  //     );
-
-  //     setAllProducts(filteredProducts);
-  //   }
-  //   if (category === "BREAD") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Bread"
-  //     );
-
-  //     setAllProducts(filteredProducts);
-  //   }
-  // }, [category]);
-
+  
   return (
     <Helmet title="home">
-      <section>
+      <section className="pt-0">
         <Container>
           <Row>
             <Col lg="6" md="6">
