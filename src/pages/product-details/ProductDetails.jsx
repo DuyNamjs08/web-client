@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Helmet from "../components/helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection";
+import Helmet from "../../components/helmet/Helmet";
+import CommonSection from "../../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
-import "../style/product-details.scss";
+import "./product-details.scss";
 import { doc, getDoc, collection, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase/firebase-Config";
+import { db } from "../../firebase/firebase-Config";
 import { useDispatch } from "react-redux";
-import { addItem } from "../redux/action";
-import ProductCard from "../components/UI/product-card/ProductCard";
+import { addItem } from "../../redux/action";
+import ProductCard from "../../components/UI/product-card/ProductCard";
 
 function ProductDetails(props) {
   const [allProducts, setAllProducts] = useState([]);

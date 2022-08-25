@@ -1,14 +1,14 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Products from '../pages/Products';
-import CartPage from '../pages/CartPage';
-import CheckOut from '../pages/CheckOut';
-import Contact from '../pages/Contact';
-import ProductDetails from '../pages/ProductDetails';
-import Home from '../pages/Home';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import ProfileUser from '../pages/ProfileUser';
+import Products from '../pages/products/Products';
+import CartPage from '../pages/cart-page/CartPage';
+import CheckOut from '../pages/checkout/CheckOut';
+import Contact from '../pages/contact/Contact';
+import ProductDetails from '../pages/product-details/ProductDetails';
+import Home from '../pages/home/Home';
+import Login from '../pages/login/Login';
+import Register from '../pages/register/Register';
+import ProfileUser from '../pages/profile-user/ProfileUser';
 import { useSelector } from 'react-redux'
 
 

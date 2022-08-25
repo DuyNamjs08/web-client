@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Helmet from "../components/helmet/Helmet";
+import Helmet from "../../components/helmet/Helmet";
 import { Container, Col, Row, ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
+import {useSelector} from 'react-redux'
 
 // api firebase
 // import heroImg from "../assets/images/hero.png";
@@ -10,30 +11,31 @@ import {
   // getDocs,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase-Config";
-import heroImg from "../assets/images/img/hero1.jpg";
-import "../style/home.scss";
-import "../style/hero-section.scss";
-import Category from "../components/UI/category/Category";
+import { db } from "../../firebase/firebase-Config";
+import heroImg from "../../assets/images/img/hero1.jpg";
+import "./home.scss";
+import "./hero-section.scss";
+import Category from "../../components/UI/category/Category";
 
 // delivery
-import featureImg01 from "../assets/images/service-01.png";
-import featureImg02 from "../assets/images/service-02.png";
-import featureImg03 from "../assets/images/service-03.png";
+import featureImg01 from "../../assets/images/service-01.png";
+import featureImg02 from "../../assets/images/service-02.png";
+import featureImg03 from "../../assets/images/service-03.png";
 
 // catagory all product
 // import products from "../assets/fake-data/products.js";
-import ProductCard from "../components/UI/product-card/ProductCard";
-import foodCategoryImg01 from "../assets/images/hamburger.png";
-import foodCategoryImg02 from "../assets/images/pizza.png";
-import foodCategoryImg03 from "../assets/images/bread.png";
+import ProductCard from "../../components/UI/product-card/ProductCard";
+import foodCategoryImg01 from "../../assets/images/hamburger.png";
+import foodCategoryImg02 from "../../assets/images/pizza.png";
+// import foodCategoryImg03 from "../assets/images/bread.png";
+import foodCategoryImg03 from "../../assets/images/bread.png";
 
 // why choose we
-import whyImg from "../assets/images/location.png";
+import whyImg from "../../assets/images/location.png";
 
 // testimonial
-import TestimonialSlider from "../components/UI/silder/TestimonialSlider";
-import networkImg from "../assets/images/network.png";
+import TestimonialSlider from "../../components/UI/silder/TestimonialSlider";
+import networkImg from "../../assets/images/network.png";
 
 // static data
 const featureData = [
@@ -55,10 +57,16 @@ const featureData = [
   },
 ];
 function Home(props) {
+  const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
   const [category, setCategory] = useState("ALL");
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hotProduct, setHotProduct] = useState([]);
+  
+
+  useEffect(() => {
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+}, [currentUser]);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -86,7 +94,7 @@ function Home(props) {
     };
   }, []);
   // console.log("allProducts:", allProducts);
-
+  
   const Loading = () => {
     return <div>loading .....</div>;
   };

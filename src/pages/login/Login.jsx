@@ -17,10 +17,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // auth login
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { authStart } from "../redux/action";
+import { authStart } from "../../redux/action";
 // backdrop
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 
 function Login() {
@@ -31,15 +29,8 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = createTheme();
-  const [isRegister, setIsRegister] = useState(false);
-
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
+  const [loading, setLoading] = useState(false);
+  console.log("Loading:", loading);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,15 +42,12 @@ function Login() {
     const dataLogin = {
       email: data.get("email"),
       password: data.get("password"),
-      isRegister: isRegister,
+      isRegister: false,
     };
     dispatch(authStart(dataLogin));
-    navigate("/home");
+    navigate('/')
+    setLoading(true);
   };
-
-  useEffect(() => {
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-  }, [currentUser]);
   return (
     <section className="pt-0">
       <ThemeProvider theme={theme}>
@@ -128,13 +116,6 @@ function Login() {
             </Box>
           </Box>
         </Container>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={open}
-          onClick={handleClose}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
       </ThemeProvider>
     </section>
   );

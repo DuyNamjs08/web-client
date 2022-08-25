@@ -1,7 +1,7 @@
 import { ListGroup } from "reactstrap";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
-import "../../../style/cart.scss";
+import "./cart.scss";
 import {useDispatch,useSelector} from 'react-redux'
 import {toggleCart} from '../../../redux/action'
 

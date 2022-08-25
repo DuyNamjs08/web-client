@@ -14,9 +14,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 //  resgister
 import { useNavigate } from "react-router-dom";
-import { authStart } from "../redux/action";
+import { authStart } from "../../redux/action";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+
 
 function Register(props) {
   const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
@@ -24,11 +24,9 @@ function Register(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = createTheme();
-  const [isRegister, setIsRegister] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsRegister(true);
     const data = new FormData(event.currentTarget);
     // console.log({
     //   email: data.get("email"),
@@ -36,14 +34,14 @@ function Register(props) {
     //   firstName: data.get("firstName"),
     //   lastName: data.get("lastName"),
     // });
-    const dataLogin = {
+    const dataRegister = {
       email: data.get("email"),
       password: data.get("password"),
-      isRegister,
+      isRegister:true,
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
     };
-    dispatch(authStart(dataLogin));
+    dispatch(authStart(dataRegister));
     navigate("/login");
   };
   return (

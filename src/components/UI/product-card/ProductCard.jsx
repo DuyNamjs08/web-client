@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../style/product-card.scss";
+import "./product-card.scss";
 import { Link } from "react-router-dom";
 import { addItem } from "../../../redux/action";
 import { useDispatch } from "react-redux";

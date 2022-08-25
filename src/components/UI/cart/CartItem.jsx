@@ -1,6 +1,6 @@
 import React from "react";
 import { ListGroupItem } from "reactstrap";
-import '../../../style/cart-shoping.scss'
+import './cart-shoping.scss'
 import {addItem,removeItem,deleteItem} from '../../../redux/action'
 import {useDispatch} from 'react-redux'
 

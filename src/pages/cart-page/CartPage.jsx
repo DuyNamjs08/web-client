@@ -1,11 +1,11 @@
 import React from "react";
-import CommonSection from "../components/UI/common-section/CommonSection";
-import Helmet from "../components/helmet/Helmet";
-import "../style/cart-page.scss";
+import CommonSection from "../../components/UI/common-section/CommonSection";
+import Helmet from "../../components/helmet/Helmet";
+import "./cart-page.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
-import { deleteItem } from "../redux/action";
+import { deleteItem } from "../../redux/action";
 
 const Tr = ({ item }) => {
   const { id, img, title, price, quantity } = item;

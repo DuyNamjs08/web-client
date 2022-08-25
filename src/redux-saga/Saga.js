@@ -5,6 +5,7 @@ import {
 } from '../redux/action'
 
 
+
 function* authenticate({ email, password, isRegister,firstName,lastName }) {
     let data
     try {

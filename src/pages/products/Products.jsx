@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Helmet from "../components/helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection";
+import Helmet from "../../components/helmet/Helmet";
+import CommonSection from "../../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
-import "../style/products.scss";
+import "./products.scss";
 // ===== category ======
-import ProductCard from "../components/UI/product-card/ProductCard";
+import ProductCard from "../../components/UI/product-card/ProductCard";
 import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase/firebase-Config";
+import { db } from "../../firebase/firebase-Config";
 // ===== paginate =========
 import ReactPaginate from "react-paginate";
 

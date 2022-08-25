@@ -4,7 +4,7 @@ import ava01 from "../../../assets/images/ava-1.jpg";
 import ava02 from "../../../assets/images/ava-2.jpg";
 import ava03 from "../../../assets/images/ava-3.jpg";
 import ava04 from "../../../assets/images/ava-4.jpg";
-import '../../../style/testimonialSlider.scss'
+import './testimonialSlider.scss'
 function TestimonialSlider(props) {
   const settings = {
     dots: true,

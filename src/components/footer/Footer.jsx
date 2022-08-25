@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/footer.scss";
+import "./footer.scss";
 import logo from "../../assets/images/img/tinder.png";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import {Link} from 'react-router-dom'

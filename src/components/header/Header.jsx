@@ -2,7 +2,7 @@ import React, { useRef,useEffect } from "react";
 import logo from "../../assets/images/img/tinder.png";
 import { Container } from "reactstrap";
 import { NavLink, Link } from "react-router-dom";
-import "../../style/header.scss";
+import "./header.scss";
 import {useSelector,useDispatch} from 'react-redux'
 import {toggleCart} from '../../redux/action'
 const nav__link = [
