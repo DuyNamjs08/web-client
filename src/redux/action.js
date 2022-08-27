@@ -8,6 +8,7 @@ export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 export const ADD_ITEM = 'ADD_ITEM';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
+export const DELETE_ALL = 'DELETE_ALL';
 export const TOGGLE_CART = 'TOGGLE_CART';
 
 
@@ -57,6 +58,11 @@ export const deleteItem = (payload) => {
   return {
     type: DELETE_ITEM,
     payload
+  }
+};
+export const deleteAll = () => {
+  return {
+    type: DELETE_ALL,
   }
 };
 // ===== toggle bar ========

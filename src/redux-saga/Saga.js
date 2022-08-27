@@ -17,8 +17,8 @@ function* authenticate({ email, password, isRegister,firstName,lastName }) {
             data = yield call(loginUser, { email, password });
             console.log("data login123 :" , data.user);
         }
-        yield put(authSuccess(data.user.uid));
-        return data.user.uid
+        yield put(authSuccess(data.user.email));
+        return data.user.email
 
     } catch (error) {
         yield put(authFail(error.message));

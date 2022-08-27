@@ -9,6 +9,7 @@ import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import Register from '../pages/register/Register';
 import ProfileUser from '../pages/profile-user/ProfileUser';
+import CheckSuccess from '../pages/checkout-success/CheckSuccess';
 import { useSelector } from 'react-redux'
 
 
@@ -31,6 +32,7 @@ function Routers() {
             <Route path='register' element={<Register />} />
             <Route path='contact' element={<Contact />} />
             <Route path='profile' element={<ProfileUser />} />
+            <Route path='success' element={<CheckSuccess />} />
 
         </Routes>
     );

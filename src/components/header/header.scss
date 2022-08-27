@@ -1,14 +1,14 @@
 .header {
   width: 100%;
-  height: 100px;
-  line-height: 100px;
+  height: 80px;
+  line-height: 80px;
   // background-color: #ccc;
   .nav__wrapper {
     display: flex;
     // align-items: center;
     .logo {
       text-align: center;
-      height: 100px;
+      height: 60px;
       img {
         width: calc(100% - 60%);
         object-fit: contain;
@@ -18,13 +18,13 @@
         font-weight: 600;
         font-size: 1rem;
         color: #212245;
-        margin-top: -40px;
+        margin-top: -35px;
         margin-bottom: 0;
       }
     }
   }
   .naviagtion {
-    height: 100px;
+    height: 80px;
     .menu {
       p {
         display: none;
@@ -44,7 +44,7 @@
     }
   }
   .nav__right {
-    height: 100px;
+    height: 80px;
     .cart__icon {
       display: flex;
       align-items: center;
@@ -56,7 +56,7 @@
       }
       .cart__badge {
         position: absolute;
-        top: 30px;
+        top: 20px;
         right: -14px;
         background: #df2020;
         color: #fff;

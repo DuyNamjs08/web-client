@@ -4,67 +4,98 @@ import Helmet from "../../components/helmet/Helmet";
 import CommonSection from "../../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import "./product-details.scss";
-import { doc, getDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../firebase/firebase-Config";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../redux/action";
 import ProductCard from "../../components/UI/product-card/ProductCard";
 
 function ProductDetails(props) {
+  const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
   const [allProducts, setAllProducts] = useState([]);
   const [data, setData] = useState({});
   const [loading, setloading] = useState(false);
   const { idProduct } = useParams();
   const [previewImg, setPreviewImg] = useState("");
   const dispatch = useDispatch();
-  const [tab, setTab] = useState("desc");
-
+  const [comment, setComment] = useState("");
+  const [listComments, setListComments] = useState([]);
 
   const handleView = useCallback(async () => {
     const docRef = doc(db, "product", idProduct);
     const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      //   console.log("Document data:", docSnap.data());
+    const querySnapshot = await getDocs(collection(db, "product"));
+    try {
       setData(docSnap.data());
       setPreviewImg(docSnap.data().img[0].img);
       setloading(true);
-    } else {
+      let list = [];
+      querySnapshot.forEach((doc) => {
+        list.push({ id: doc.id, ...doc.data() });
+        const commonProduct = list.filter(
+          (item) => item.category === docSnap.data().category
+        );
+        setAllProducts(commonProduct);
+      });
+    } catch (error) {
       console.log("No such document!");
     }
   }, [idProduct]);
 
-  console.log("check img:", data.img);
+  const hadleAddComment = async (e) => {
+    e.preventDefault();
+    if (comment === undefined || comment === "") {
+      return;
+    }
+   const res= await addDoc(collection(db, "comments"), {
+      comment: comment,
+      currentUser: currentUser,
+      timestamp: serverTimestamp(),
+    });
+    console.log('res:' ,res);
+  };
+  const AllListComments = async () => {
+    const getComments = await getDocs(collection(db, "comments"));
+    try {
+      let listComents = [];
+      getComments.forEach((doc) => {
+        listComents.push({ id: doc.id, ...doc.data() });
+      });
+      setComment("");
+      setListComments(listComents);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log("listcomments" ,listComments );
+
+  const { id, title, price, category, description, img } = data;
 
   useEffect(() => {
     if (idProduct !== undefined && idProduct !== "") {
       handleView();
+      // window.scroll(0, 0);
+      // AllListComments()
     }
-  }, [handleView, idProduct]);
 
-  const { id, title, price, category, description, img } = data;
-  useEffect(() => {
-    const unsub = onSnapshot(
-      collection(db, "product"),
-      (snapShot) => {
-        let list = [];
-        snapShot.docs.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-        // console.log(list);
-        setAllProducts(list);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    return () => {
-      unsub();
-    };
-  }, [allProducts]);
-  console.log("AllProducts:" ,allProducts);
+  }, [idProduct]);
   useEffect(()=>{
-    window.scroll(0,0)
-  },[data])
+    AllListComments()
+  },[])
+
+  console.log("comments:", comment);
+  // console.log("category:", category);
+  // console.log("AllProducts:", allProducts);
+  // console.log("loading:", loading);
+
   return (
     <Helmet title="Product-Details">
       <CommonSection title={title} />
@@ -74,9 +105,9 @@ function ProductDetails(props) {
             <Col lg="2" md="2">
               <div className="product__images mt-5 ">
                 {loading ? (
-                  data.img.map((item,index) => (
+                  data.img.map((item, index) => (
                     <div
-                     key={index}
+                      key={index}
                       className="img__item mb-3"
                       onClick={() => setPreviewImg(item.img)}
                     >
@@ -106,7 +137,9 @@ function ProductDetails(props) {
                 <p className="category mb-5">
                   Category: <span>{category}</span>
                 </p>
-
+                <div className="tab__content">
+                  <p>{description}</p>
+                </div>
                 <button
                   className="addTOCart__btn"
                   onClick={() => dispatch(addItem({ id, title, img, price }))}
@@ -117,74 +150,81 @@ function ProductDetails(props) {
             </Col>
             <Col lg="12">
               <div className="tabs d-flex align-items-center gap-5 pt-5 pb-3">
-                <h6
-                  className={`${tab === "desc" ? "tab__active" : ""}`}
-                  onClick={() => setTab("desc")}
-                >
-                  Description
-                </h6>
-                <h6
-                  className={`${tab === "rev" ? "tab__active" : ""}`}
-                  onClick={() => setTab("rev")}
-                >
+                <h6 className="tab__active">
                   Review
                 </h6>
               </div>
-              {tab === "desc" ? (
-                <div className="tab__content">
-                  <p>{description}</p>
+
+              <div className="tab__form">
+                <Row>
+                  <Col lg="12">
+                    <p>Nhap noi dung comment</p>{" "}
+                  </Col>
+                  <Col lg="12">
+                    <form onSubmit={hadleAddComment}>
+                      <div className="">
+                        <textarea
+                          onChange={(e) => setComment(e.target.value)}
+                          rows={2}
+                          type="text"
+                          placeholder="Write your review"
+                        />
+                      </div>
+                      <button type="submit" className="addTOCart__btn">
+                        Submit
+                      </button>
+                    </form>
+                  </Col>
+                </Row>
+                <div className="review pt-2">
+                  <Row>
+                    {listComments && listComments.length > 0 ? (
+                      listComments.map((item) => (
+                        <div key={item.id}>
+                          <Col lg="2" md="2">
+                            <p className="user__name mb-0">
+                              Binh luan {currentUser}
+                            </p>
+                          </Col>
+                          <Col lg="10" md="10">
+                            <p className="feedback__text m-0">{item.comment}</p>
+                            <p className="feedback__text m-0">
+                              {/* {item.timestamp} */}
+                            </p>
+                          </Col>
+                        </div>
+                      ))
+                    ) : (
+                      <Col lg="12"> No comments</Col>
+                    )}
+                  </Row>
                 </div>
-              ) : (
-                <div className="tab__form">
-                  <div className="review pt-2">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email ">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                  <div className="review pt-2">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email ">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                  <div className="review pt-2">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email ">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                  <form className="form">
-                    <div className="form__group">
-                      <input type="text" placeholder="Enter your name" />
-                    </div>
-
-                    <div className="form__group">
-                      <input type="text" placeholder="Enter your email" />
-                    </div>
-
-                    <div className="form__group">
-                      <textarea
-                        rows={5}
-                        type="text"
-                        placeholder="Write your review"
-                      />
-                    </div>
-
-                    <button type="submit" className="addTOCart__btn">
-                      Submit
-                    </button>
-                  </form>
-                </div>
-              )}
+              </div>
             </Col>
             {/* ======== release product  */}
 
             <Col lg="12" className="mb-5 mt-4">
               <h2 className="related__Product-title">Release Product</h2>
             </Col>
-            {loading ? allProducts.filter((item)=>item.category === category).map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
-                <ProductCard item={item} />
-              </Col>
-            )) : <div>Loading....</div>}
+
+            {loading ? (
+              allProducts
+                .filter((item) => item.category === category)
+                .map((item) => (
+                  <Col
+                    lg="3"
+                    md="4"
+                    sm="6"
+                    xs="6"
+                    className="mb-4"
+                    key={item.id}
+                  >
+                    <ProductCard item={item} />
+                  </Col>
+                ))
+            ) : (
+              <div>Loading....</div>
+            )}
           </Row>
         </Container>
       </section>

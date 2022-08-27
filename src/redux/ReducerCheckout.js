@@ -8,7 +8,7 @@ import {
     LOGOUT_FAIL,
     LOGOUT_START,
     LOGOUT_SUCCESS,
-    ADD_ITEM, REMOVE_ITEM, DELETE_ITEM,
+    ADD_ITEM, REMOVE_ITEM, DELETE_ITEM,DELETE_ALL,
     TOGGLE_CART
 } from './action';
 const initialState = {
@@ -132,6 +132,13 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
             return {
                 ...state, totalAmount: state.totalAmount, totalQuantity: state.totalQuantity,
                 cartAr: [...state.cartAr]
+            }
+        }
+        case DELETE_ALL :{
+            return{
+                ...state , cartAr:[],
+                totalQuantity: 0,
+                totalAmount: 0,
             }
         }
         case TOGGLE_CART: {

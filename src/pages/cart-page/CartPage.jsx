@@ -24,7 +24,7 @@ const Tr = ({ item }) => {
       <td className="text-center cart__item-del">
         <i
           onClick={() => dispatch(deleteItem(id))}
-          class="ri-delete-bin-line"
+          className="ri-delete-bin-line"
         ></i>
       </td>
     </tr>
