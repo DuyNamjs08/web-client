@@ -1,4 +1,4 @@
-import { call, take, put, all, } from 'redux-saga/effects'
+import { call, take, put, all, takeEvery, } from 'redux-saga/effects'
 import { registerUser, loginUser, logoutUser } from '../utils/authFirebase'
 import {
     AUTH_START, authSuccess, authFail, LOGOUT_START, logoutSuccess, logoutFail,
@@ -6,16 +6,16 @@ import {
 
 
 
-function* authenticate({ email, password, isRegister,firstName,lastName }) {
+function* authenticate({ email, password, isRegister, firstName, lastName }) {
     let data
     try {
         if (isRegister) {
             console.log("isRegister :", isRegister);
-            data = yield call(registerUser, { email, password,firstName,lastName });
-            console.log('data register :' , data.user.uid);
+            data = yield call(registerUser, { email, password, firstName, lastName });
+            console.log('data register :', data.user.uid);
         } else {
             data = yield call(loginUser, { email, password });
-            console.log("data login123 :" , data.user);
+            console.log("data login123 :", data.user);
         }
         yield put(authSuccess(data.user.email));
         return data.user.email
@@ -27,9 +27,10 @@ function* authenticate({ email, password, isRegister,firstName,lastName }) {
 }
 function* logout() {
     try {
-        yield call(logoutUser)
+        const data = yield call(logoutUser)
         console.log('logout - start');
-        yield put(logoutSuccess())
+        yield put(logoutSuccess(null))
+        return data
     }
     catch (error) {
         yield put(logoutFail())
@@ -37,18 +38,18 @@ function* logout() {
 }
 function* authFlow() {
     while (true) {
-        const {payload} = yield take(AUTH_START);
+        const { payload } = yield take(AUTH_START);
         console.log('isRegister :: ', payload.isRegister);
         const uid = yield call(authenticate, payload);
         console.log('uid :', uid);
-        if (uid) {
-            yield take(LOGOUT_START);
-            yield call(logout);
-        }
+       
     }
 }
+function* authLogout(){
+    yield takeEvery(LOGOUT_START,logout);
+}   
 function* Saga() {
-    yield all([authFlow()])
+    yield all([authFlow(),authLogout()])
 
 }
 

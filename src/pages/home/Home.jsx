@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux'
 
 // api firebase
 // import heroImg from "../assets/images/hero.png";
+import HeroSection from "../../components/UI/hero-section/HeroSection";
 import {
   collection,
   // getDocs,
@@ -113,6 +114,9 @@ function Home(props) {
   
   return (
     <Helmet title="home">
+      <section className="pt-0">
+        <HeroSection />
+      </section>
       <section className="pt-0">
         <Container>
           <Row>

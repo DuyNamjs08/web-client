@@ -1,7 +1,7 @@
 .product__item {
   border: 1px solid #fde4e4;
   text-align: center;
-  padding: 30px;
+  padding: 0;
   cursor: pointer;
   .product__img {
     margin-bottom: 20px;
@@ -11,6 +11,7 @@
     }
   }
   .product__content {
+    padding: 20px;
     h5 {
       margin-bottom: 30px;
       a {

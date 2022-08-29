@@ -47,7 +47,7 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
             };
         case LOGOUT_SUCCESS:
             return {
-                ...initialState,
+                ...initialState,currentUser:payload
             };
         case LOGOUT_FAIL: {
             return {

@@ -37,8 +37,9 @@ export const logoutFail = () => ({
   type: LOGOUT_FAIL,
 });
 
-export const logoutSuccess = () => ({
+export const logoutSuccess = (payload) => ({
   type: LOGOUT_SUCCESS,
+  payload:payload
 });
 
 // =================== cart =================

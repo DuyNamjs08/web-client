@@ -5,6 +5,7 @@ import { NavLink, Link } from "react-router-dom";
 import "./header.scss";
 import {useSelector,useDispatch} from 'react-redux'
 import {toggleCart} from '../../redux/action'
+import MenuHeader from "../UI/menu-header/MenuHeader";
 const nav__link = [
   { display: "Home", path: "home" },
   { display: "Products", path: "product" },
@@ -15,6 +16,7 @@ const nav__link = [
 function Header() {
   const dispatch =useDispatch()
   const totalQuantity = useSelector((state) => state.ReducerCheckout.totalQuantity);
+  const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
   const totalAmount = useSelector((state) => state.ReducerCheckout.totalAmount);
   const cartAr = useSelector((state) => state.ReducerCheckout.cartAr);
   console.log('totalQuantity:',totalQuantity);
@@ -72,19 +74,23 @@ function Header() {
               <span className="cart__badge">{totalQuantity}</span>
             </span>
             <span className="user">
-              <Link to="/profile">
+              {/* <Link to="/profile">
                 <i className="ri-user-line"></i>
-              </Link>
+              </Link> */}
+              <MenuHeader />
             </span>
             <span className="mobile__menu" onClick={toggleMenu}>
               <i className="ri-menu-line"></i>
             </span>
-            <span className="header__avatar">
-              <Link to="/login">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                  alt=""
-                />
+            <span className="d-flex header__avatar align-items-center">
+              <Link to="/profile">
+                 
+                {currentUser ? 
+                <div className="text-center">
+                <img src="https://www.shareicon.net/data/512x512/2016/08/05/806962_user_512x512.png" alt="" />
+                <p className="mb-0">{currentUser}</p>
+                </div>
+                 : ''}
               </Link>
             </span>
           </div>
