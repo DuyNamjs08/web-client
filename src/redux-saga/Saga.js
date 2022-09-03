@@ -1,23 +1,27 @@
 import { call, take, put, all, takeEvery, } from 'redux-saga/effects'
-import { registerUser, loginUser, logoutUser } from '../utils/authFirebase'
+import { registerUser, loginUser, logoutUser,takeNameUser } from '../utils/authFirebase'
 import {
-    AUTH_START, authSuccess, authFail, LOGOUT_START, logoutSuccess, logoutFail,
+    AUTH_START, authSuccess, authFail, LOGOUT_START, logoutSuccess, logoutFail,takeName
 } from '../redux/action'
 
 
 
 function* authenticate({ email, password, isRegister, firstName, lastName }) {
     let data
+    let nameUser
     try {
         if (isRegister) {
             console.log("isRegister :", isRegister);
             data = yield call(registerUser, { email, password, firstName, lastName });
-            console.log('data register :', data.user.uid);
+            // console.log('data register :', data.user.uid);
         } else {
             data = yield call(loginUser, { email, password });
-            console.log("data login123 :", data.user);
+            console.log("data login123 :", data.user.uid);
+            nameUser = yield call(takeNameUser ,data.user.uid )
+            console.log("nameUser:" ,nameUser);
         }
         yield put(authSuccess(data.user.email));
+        yield put (takeName(nameUser))
         return data.user.email
 
     } catch (error) {
@@ -30,6 +34,7 @@ function* logout() {
         const data = yield call(logoutUser)
         console.log('logout - start');
         yield put(logoutSuccess(null))
+        yield put (takeName(null))
         return data
     }
     catch (error) {
@@ -40,8 +45,9 @@ function* authFlow() {
     while (true) {
         const { payload } = yield take(AUTH_START);
         console.log('isRegister :: ', payload.isRegister);
-        const uid = yield call(authenticate, payload);
-        console.log('uid :', uid);
+        // const uid = 
+        yield call(authenticate, payload);
+        // console.log('uid :', uid);
        
     }
 }

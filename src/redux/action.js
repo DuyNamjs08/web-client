@@ -10,6 +10,7 @@ export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const DELETE_ALL = 'DELETE_ALL';
 export const TOGGLE_CART = 'TOGGLE_CART';
+export const TAKE_NAME = 'TAKE_NAME';
 
 
 
@@ -70,5 +71,14 @@ export const deleteAll = () => {
 export const toggleCart = () => {
   return {
     type: TOGGLE_CART,
+  }
+};
+
+// ======== take name ========
+
+export const takeName = (data) => {
+  return {
+    type: TAKE_NAME,
+    payload:data
   }
 };

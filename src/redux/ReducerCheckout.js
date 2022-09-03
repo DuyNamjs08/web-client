@@ -9,17 +9,18 @@ import {
     LOGOUT_START,
     LOGOUT_SUCCESS,
     ADD_ITEM, REMOVE_ITEM, DELETE_ITEM,DELETE_ALL,
-    TOGGLE_CART
+    TOGGLE_CART,TAKE_NAME
 } from './action';
 const initialState = {
     isLoading: false,
     isLoggedIn: false,
     currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
     error: null,
-    cartAr: [],
-    totalQuantity: 0,
-    totalAmount: 0,
-    cartIsVisible: false
+    cartAr:JSON.parse(localStorage.getItem("cart")) || [],
+    totalQuantity: JSON.parse(localStorage.getItem("totalQuantity")) || 0,
+    totalAmount:JSON.parse(localStorage.getItem("totalAmount")) || 0,
+    cartIsVisible: false,
+    takeName: JSON.parse(localStorage.getItem("name")) || null,
 }
 
 const ReducerCheckout = (state = initialState, { type, payload }) => {
@@ -58,7 +59,7 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
         }
         case ADD_ITEM:
             const newItem = payload;
-            console.log("id", newItem.id);
+            console.log("newItem", newItem);
             const existingItem = state.cartAr.find(
                 (item) => item.id === newItem.id);
             state.totalQuantity++;
@@ -69,7 +70,8 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
                     img: newItem.img,
                     price: newItem.price,
                     quantity: 1,
-                    totalPrice: Number(newItem.price)
+                    totalPrice: Number(newItem.price),
+                    stock:newItem.stock
                 });
                 state.totalAmount = state.cartAr.reduce(
                     (total, item) => total + Number(item.price) * Number(item.quantity), 0);
@@ -81,6 +83,13 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
             } else {
                 existingItem.quantity++;
                 existingItem.totalPrice = Number(existingItem.totalPrice) + Number(newItem.price);
+                if(Number(existingItem.quantity) > Number(payload.stock)){
+                    return {
+                        ...state , totalQuantity: 0,
+                        totalAmount:0,
+                        cartAr: []
+                    }
+                }
             }
             state.totalAmount = state.cartAr.reduce(
                 (total, item) => total + Number(item.price) * Number(item.quantity), 0);
@@ -144,6 +153,11 @@ const ReducerCheckout = (state = initialState, { type, payload }) => {
         case TOGGLE_CART: {
             return {
                 ...state, cartIsVisible: !state.cartIsVisible
+            }
+        }
+        case TAKE_NAME: {
+            return {
+                ...state, takeName:payload
             }
 
         }

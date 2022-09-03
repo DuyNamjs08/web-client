@@ -1,9 +1,16 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalConfirm from "../../components/UI/modal-confirm/ModalConfirm";
-import {useSelector} from 'react-redux'
-import {db} from '../../firebase/firebase-Config'
-import { doc, setDoc ,addDoc , collection } from "firebase/firestore"; 
+import { useSelector } from "react-redux";
+import { db, auth } from "../../firebase/firebase-Config";
+import {
+  doc,
+  setDoc,
+  // addDoc , collection ,
+  serverTimestamp,
+  updateDoc
+} from "firebase/firestore";
+
 
 function CheckOut() {
   const [firstName, setFirstName] = useState("");
@@ -38,31 +45,39 @@ function CheckOut() {
     CVV,
     payment,
   };
- 
+
   const cartAr = useSelector((state) => state.ReducerCheckout.cartAr);
   const totalAmount = useSelector((state) => state.ReducerCheckout.totalAmount);
-  const totalQuantity = useSelector((state) => state.ReducerCheckout.totalQuantity);
-  const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
-  console.log('currentUser' ,currentUser);
-  const authCheckOut =async()=>{
-    await setDoc(doc(db, "orders",currentUser ), {
-        ...data
-      });
-    await addDoc(collection(db, "orders"), {
-        name: "Tokyo",
-        country: "Japan",
-        totalAmount:totalAmount
-      });
+  const totalQuantity = useSelector(
+    (state) => state.ReducerCheckout.totalQuantity
+  );
+  // const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
 
-  }
-  const handleModalOpen = async() => {
+  const authCheckOut = async () => {
+    await setDoc(doc(db, "orders", auth.currentUser.uid), {
+      ...data,
+      cartAr: cartAr,
+      timestamp: serverTimestamp(),
+    });
+    cartAr.map(async(item) => {
+      await updateDoc(doc(db, "product", item.id),{
+        stock:Number(item.stock) - Number(item.quantity)
+      });
+    });
+  };
+  console.log("cartAr :", cartAr);
+
+  const handleModalOpen = async () => {
     setModalOpen(true);
   };
-  const handleSubmit =(e)=>{
-    e.preventDefault()
-    handleModalOpen()
-
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleModalOpen();
+  };
+  auth.currentUser && console.log("idUser:", auth.currentUser.uid);
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <div className="container">
       <main>
@@ -75,26 +90,33 @@ function CheckOut() {
           <div className="col-md-6 col-lg-5 order-md-last">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-primary">Your cart</span>
-              <span className="badge bg-primary rounded-pill">{totalQuantity}</span>
+              <span className="badge bg-primary rounded-pill">
+                {totalQuantity}
+              </span>
             </h4>
             <ul className="list-group mb-3">
-                {cartAr.length>0 ? cartAr.map(item=>(
-              <li key={item.id} className="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 className="my-0">{item.title}</h6>
-                  <small className="text-muted">Brief description</small>
-                </div>
-                <span className="text-muted">{item.price}</span>
-              </li>
-                )) : 
+              {cartAr.length > 0 ? (
+                cartAr.map((item) => (
+                  <li
+                    key={item.id}
+                    className="list-group-item d-flex justify-content-between lh-sm"
+                  >
+                    <div>
+                      <h6 className="my-0">{item.title}</h6>
+                      <small className="text-muted">Brief description</small>
+                    </div>
+                    <span className="text-muted">{item.price}</span>
+                  </li>
+                ))
+              ) : (
                 <li className="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 className="my-0">Your cart is empty</h6>
-                </div>
-                <span className="text-muted">0</span>
-              </li>}
-              
-              
+                  <div>
+                    <h6 className="my-0">Your cart is empty</h6>
+                  </div>
+                  <span className="text-muted">0</span>
+                </li>
+              )}
+
               <li className="list-group-item d-flex justify-content-between bg-light">
                 <div className="text-success">
                   <h6 className="my-0">Promo code</h6>
@@ -424,10 +446,7 @@ function CheckOut() {
               {/* ============== */}
 
               <hr className="my-4"></hr>
-              <button
-                type="submit"
-                className="w-70 btn btn-primary btn-lg"
-              >
+              <button type="submit" className="w-70 btn btn-primary btn-lg">
                 Continue to checkout
               </button>
             </form>
@@ -439,7 +458,9 @@ function CheckOut() {
       <footer className="my-5 pt-5 text-muted text-center text-small">
         <p className="mb-1">&copy; 2017-2021 Company Name</p>
       </footer>
-      {modalOpen && <ModalConfirm authCheckOut={authCheckOut} setOpenModal={setModalOpen} />}
+      {modalOpen && (
+        <ModalConfirm authCheckOut={authCheckOut} setOpenModal={setModalOpen} />
+      )}
     </div>
   );
 }

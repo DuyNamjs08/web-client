@@ -16,12 +16,12 @@ const nav__link = [
 function Header() {
   const dispatch =useDispatch()
   const totalQuantity = useSelector((state) => state.ReducerCheckout.totalQuantity);
-  const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
-  const totalAmount = useSelector((state) => state.ReducerCheckout.totalAmount);
-  const cartAr = useSelector((state) => state.ReducerCheckout.cartAr);
-  console.log('totalQuantity:',totalQuantity);
-  console.log('totalAmount:',totalAmount);
-  console.log('cartAr:',cartAr);
+  // const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
+  const takeName = useSelector((state) => state.ReducerCheckout.takeName);
+  console.log("takeName:" ,takeName?.firstName ,takeName?.lastName);
+  // console.log('totalQuantity:',totalQuantity);
+  // console.log('totalAmount:',totalAmount);
+  // console.log('cartAr:',cartAr);
   const menuRef = useRef(null);
   const headerRef = useRef(null);
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
@@ -85,10 +85,10 @@ function Header() {
             <span className="d-flex header__avatar align-items-center">
               <Link to="/profile">
                  
-                {currentUser ? 
+                {takeName ? 
                 <div className="text-center">
                 <img src="https://www.shareicon.net/data/512x512/2016/08/05/806962_user_512x512.png" alt="" />
-                <p className="mb-0">{currentUser}</p>
+                <p className="mb-0">{takeName.firstName} {takeName.lastName}</p>
                 </div>
                  : ''}
               </Link>

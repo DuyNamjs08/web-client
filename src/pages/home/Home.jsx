@@ -59,6 +59,10 @@ const featureData = [
 ];
 function Home(props) {
   const currentUser = useSelector((state) => state.ReducerCheckout.currentUser);
+  const takeName = useSelector((state) => state.ReducerCheckout.takeName);
+  const cartAr = useSelector((state) => state.ReducerCheckout.cartAr);
+  const totalQuantity = useSelector((state) => state.ReducerCheckout.totalQuantity);
+  const totalAmount = useSelector((state) => state.ReducerCheckout.totalAmount);
   const [category, setCategory] = useState("ALL");
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,7 +71,11 @@ function Home(props) {
 
   useEffect(() => {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-}, [currentUser]);
+    localStorage.setItem("name", JSON.stringify(takeName));
+    localStorage.setItem("cart", JSON.stringify(cartAr));
+    localStorage.setItem("totalQuantity", JSON.stringify(totalQuantity));
+    localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
+}, [currentUser,takeName,cartAr,totalQuantity,totalAmount]);
 
   useEffect(() => {
     const unsub = onSnapshot(

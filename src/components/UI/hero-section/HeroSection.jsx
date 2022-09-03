@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import hero1 from '../../../assets/hero-section/1.jpg'
 import hero2 from '../../../assets/hero-section/2.jpg'

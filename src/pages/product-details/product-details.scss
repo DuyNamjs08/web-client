@@ -1,4 +1,10 @@
 .product__details__container {
+  .img__bottom{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+
+  }
   .addTOCart__btn {
     padding: 7px 10px;
     font-size: 0.9rem;

@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 function Routers() {
     const { currentUser } = useSelector(state => state.ReducerCheckout)
     const RequireAuth = ({ children }) => {
-        console.log("RequireAuth::", currentUser);
+        // console.log("RequireAuth::", currentUser);
         return currentUser ? children : <Navigate to="/login" />;
 
     }

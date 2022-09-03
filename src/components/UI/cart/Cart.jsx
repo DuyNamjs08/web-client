@@ -28,12 +28,6 @@ function Cart(props) {
               <CartItem item={item} key={item.id} />
             ))
           )}
-          {/* <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem /> */}
         </div>
 
         <div className="cart__bottom d-flex align-items-center justify-content-between">
